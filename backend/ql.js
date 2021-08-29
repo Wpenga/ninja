@@ -39,16 +39,17 @@ module.exports.getEnvsCount = async () => {
   return data.length;
 };
 
-module.exports.addEnv = async (cookie) => {
+module.exports.addEnv = async (cookie, remarks) => {
   const token = await getToken();
   const body = await api({
     method: 'post',
     url: 'api/envs',
     params: { t: Date.now() },
-    json: {
+    json: [{
       name: 'JD_COOKIE',
       value: cookie,
-    },
+      remarks,
+    }],
     headers: {
       Accept: 'application/json',
       authorization: `Bearer ${token}`,
@@ -58,7 +59,7 @@ module.exports.addEnv = async (cookie) => {
   return body;
 };
 
-module.exports.updateEnv = async (cookie, eid) => {
+module.exports.updateEnv = async (cookie, eid, remarks) => {
   const token = await getToken();
   const body = await api({
     method: 'put',
@@ -68,6 +69,7 @@ module.exports.updateEnv = async (cookie, eid) => {
       name: 'JD_COOKIE',
       value: cookie,
       _id: eid,
+      remarks,
     },
     headers: {
       Accept: 'application/json',
